@@ -1,6 +1,6 @@
 import withRoot from './modules/withRoot';
 import { makeStyles } from '@material-ui/core/styles';
-import React from "react";
+import React, { useEffect } from "react";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,6 +10,11 @@ import TableRow from '@material-ui/core/TableRow';
 import AppAppBar from './modules/views/AppAppBar';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
+import { useLocation } from 'react-router-dom';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const useStyles = makeStyles({
   container: {
@@ -35,7 +40,11 @@ const rows = [
 
 function Index() {
   const classes = useStyles();
-
+  const query = useQuery();
+  const user = query.get("user");
+  useEffect (() => {
+    // get data from server
+  }, []);
   return (
     <React.Fragment>
       <AppAppBar />

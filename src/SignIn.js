@@ -3,7 +3,7 @@ import withRoot from './modules/withRoot';
 import React from 'react';
 import { Field, Form, FormSpy } from 'react-final-form';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
+
 import Typography from './modules/components/Typography';
 import AppAppBar from './modules/views/AppAppBar';
 import AppForm from './modules/views/AppForm';
@@ -11,6 +11,7 @@ import { email, required } from './modules/form/validation';
 import RFTextField from './modules/form/RFTextField';
 import FormButton from './modules/form/FormButton';
 import FormFeedback from './modules/form/FormFeedback';
+import { Redirect, Link, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SignIn() {
+    const history = useHistory();
     const classes = useStyles();
     const [sent, setSent] = React.useState(false);
 
@@ -42,8 +44,26 @@ function SignIn() {
         return errors;
     };
 
-    const handleSubmit = () => {
-        setSent(true);
+    const handleSubmit = (e) => {
+        const url =  'https://FriendsWithBenefits--quocanh.repl.co' +'/signin';
+        const options = {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+        },
+        body: JSON.stringify(e)
+    };
+
+      fetch(url, options)
+        .then(response => {
+          if (response.status !== 200) {
+            window.alert('Incorrect user/password')
+          } else {
+            history.push(`/subscriptions?user=${e.email}`);
+          }
+        })
+      setSent(true);
     };
 
     return (
@@ -62,7 +82,7 @@ function SignIn() {
                     <Typography variant="body2" align="center">
                         {'Not a member yet? '}
                         <Link
-                            href="/premium-themes/onepirate/sign-up/"
+                            to="/signup"
                             align="center"
                             underline="always"
                         >
@@ -75,9 +95,9 @@ function SignIn() {
                     subscription={{ submitting: true }}
                     validate={validate}
                 >
-                    {({ handleSubmit2, submitting }) => (
+                    {({ handleSubmit, submitting }) => (
                         <form
-                            onSubmit={handleSubmit2}
+                            onSubmit={handleSubmit}
                             className={classes.form}
                             noValidate
                         >
@@ -132,12 +152,12 @@ function SignIn() {
                     )}
                 </Form>
                 <Typography align="center">
-                    <Link
+                    {/*<Link
                         underline="always"
                         href="/premium-themes/onepirate/forgot-password/"
                     >
                         Forgot password?
-                    </Link>
+                    </Link>*/}
                 </Typography>
             </AppForm>
         </React.Fragment>
