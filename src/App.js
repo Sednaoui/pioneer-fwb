@@ -1,11 +1,11 @@
 import React from 'react';
 import AppAppBar from './modules/views/AppAppBar';
-import Subscriptions from './Subscriptions';
+import Home from './Home';
 
 function App() {
     return (
         <React.Fragment>
-            <Subscriptions />
+            <Home />
         </React.Fragment>
     );
 }
