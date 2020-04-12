@@ -4,7 +4,7 @@ import withRoot from './modules/withRoot';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 import { Field, Form, FormSpy } from 'react-final-form';
 import Typography from './modules/components/Typography';
 import AppAppBar from './modules/views/AppAppBar';
@@ -45,8 +45,31 @@ function SignUp() {
     return errors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    console.log(e);
+    const url = 'https://FriendsWithBenefits--quocanh.repl.co' +'/signup';
+    const options = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      body: JSON.stringify(e)
+    };
+
+    fetch(url, options)
+      .then(response => {
+      if (response.status !== 200) {
+        response.json().then(result => window.alert(result.error));
+        throw new Error('bypass');
+      }
+      else return response;
+    }).then(res => res.json()).then(body => console.log(body));
+
+    console.log('TEST');
+
     setSent(true);
+    // e.preventDefault();
   };
 
   return (
@@ -58,14 +81,18 @@ function SignUp() {
             Sign Up
           </Typography>
           <Typography variant="body2" align="center">
-            <Link href="/premium-themes/onepirate/sign-in/" underline="always">
+            <Link to="/signin">
               Already have an account?
             </Link>
           </Typography>
         </React.Fragment>
-        <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+        <Form 
+          onSubmit={handleSubmit} 
+          subscription={{ submitting: true }} 
+          validate={validate}
+        >
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit} className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Field
