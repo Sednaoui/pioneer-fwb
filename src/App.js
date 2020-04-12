@@ -1,11 +1,11 @@
 import React from 'react';
 import AppAppBar from './modules/views/AppAppBar';
-import SignIn from './SignIn';
+import Subscriptions from './Subscriptions';
 
 function App() {
     return (
         <React.Fragment>
-            <SignIn />
+            <Subscriptions />
         </React.Fragment>
     );
 }
